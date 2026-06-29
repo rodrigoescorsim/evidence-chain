@@ -1,0 +1,21 @@
+[package]
+name = "evidence-chain"
+version = "0.1.0"
+edition = "2021"
+authors = ["Rodrigo Escorsim <rodrigo.escorsim@gmail.com>"]
+license = "MIT"
+description = "Builder for explainable evidence chains — link observations to decisions with quantitative thresholds and pass/fail tracking"
+repository = "https://github.com/rodrigoescorsim/evidence-chain"
+homepage = "https://github.com/rodrigoescorsim/evidence-chain"
+documentation = "https://docs.rs/evidence-chain"
+readme = "README.md"
+keywords = ["evidence", "explainability", "audit", "decision", "reasoning"]
+categories = ["data-structures", "encoding"]
+rust-version = "1.75"
+exclude = [".github/"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+serde_json = "1.0"
