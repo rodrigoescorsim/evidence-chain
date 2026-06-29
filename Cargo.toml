@@ -10,7 +10,7 @@ homepage = "https://github.com/rodrigoescorsim/evidence-chain"
 documentation = "https://docs.rs/evidence-chain"
 readme = "README.md"
 keywords = ["evidence", "explainability", "audit", "decision", "reasoning"]
-categories = ["data-structures", "encoding"]
+categories = ["data-structures", "rust-patterns"]
 rust-version = "1.75"
 exclude = [".github/"]
 

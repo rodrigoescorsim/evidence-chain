@@ -51,7 +51,7 @@
 //!
 //! let json = serde_json::to_string(&chain).unwrap();
 //! let decoded: EvidenceChain = serde_json::from_str(&json).unwrap();
-//! assert_eq!(decoded.heuristic_id, "signal-v1");
+//! assert_eq!(decoded.rule_id, "signal-v1");
 //! ```
 
 use serde::{Deserialize, Serialize};
@@ -165,7 +165,7 @@ pub struct EvidenceStrength {
 /// Build the chain by adding [`EvidenceLink`]s, then call [`finalize`](Self::finalize)
 /// to compute the aggregate [`EvidenceStrength`].
 ///
-/// `heuristic_id` and `heuristic_version` identify the rule or model that
+/// `rule_id` and `rule_version` identify the rule or model that
 /// produced this chain — use any stable identifiers meaningful to your domain.
 ///
 /// # Example
@@ -191,9 +191,9 @@ pub struct EvidenceStrength {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EvidenceChain {
     /// Identifier of the rule or model that produced this chain.
-    pub heuristic_id: String,
+    pub rule_id: String,
     /// Version of the rule or model.
-    pub heuristic_version: String,
+    pub rule_version: String,
     /// Ordered list of evidence observations.
     pub links: Vec<EvidenceLink>,
     /// Aggregate strength — populated by [`finalize`](Self::finalize).
@@ -202,10 +202,10 @@ pub struct EvidenceChain {
 
 impl EvidenceChain {
     /// Creates an empty chain for the given rule identifier and version.
-    pub fn new(heuristic_id: impl Into<String>, version: impl Into<String>) -> Self {
+    pub fn new(rule_id: impl Into<String>, version: impl Into<String>) -> Self {
         Self {
-            heuristic_id: heuristic_id.into(),
-            heuristic_version: version.into(),
+            rule_id: rule_id.into(),
+            rule_version: version.into(),
             links: Vec::new(),
             strength: EvidenceStrength {
                 total_checks: 0,
@@ -306,9 +306,13 @@ mod tests {
 
     #[test]
     fn evidence_link_builder_fields() {
-        let link = EvidenceLink::new(EvidenceCategory::Temporal, "Age exceeded limit", "record:42")
-            .with_metric(60_000.0, "blocks")
-            .with_threshold(157_680.0, true);
+        let link = EvidenceLink::new(
+            EvidenceCategory::Temporal,
+            "Age exceeded limit",
+            "record:42",
+        )
+        .with_metric(60_000.0, "blocks")
+        .with_threshold(157_680.0, true);
         assert_eq!(link.observation, "Age exceeded limit");
         assert_eq!(link.metric_value, Some(60_000.0));
         assert_eq!(link.metric_unit.as_deref(), Some("blocks"));
@@ -344,7 +348,7 @@ mod tests {
         chain.finalize();
         let json = serde_json::to_string(&chain).unwrap();
         let decoded: EvidenceChain = serde_json::from_str(&json).unwrap();
-        assert_eq!(decoded.heuristic_id, "velocity-check");
+        assert_eq!(decoded.rule_id, "velocity-check");
         assert_eq!(decoded.strength.total_checks, 2);
         assert!((decoded.strength.ratio - 0.5).abs() < 1e-9);
     }

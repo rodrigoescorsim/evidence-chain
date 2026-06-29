@@ -46,7 +46,7 @@ fn main() {
 
     chain.finalize();
 
-    println!("Rule:    {} v{}", chain.heuristic_id, chain.heuristic_version);
+    println!("Rule:    {} v{}", chain.rule_id, chain.rule_version);
     println!(
         "Result:  {}/{} checks passed ({:.0}%)",
         chain.strength.passed_checks,
@@ -55,7 +55,7 @@ fn main() {
     );
     println!();
 
-    for (i, link) in chain.links.iter().enumerate() {
+    for link in &chain.links {
         let status = if link.threshold_met { "✓" } else { "✗" };
         print!("  [{status}] [{:?}] {}", link.category, link.observation);
         if let (Some(val), Some(unit)) = (link.metric_value, &link.metric_unit) {
@@ -65,6 +65,5 @@ fn main() {
             print!(" [threshold: {threshold}]");
         }
         println!(" — {}", link.reference);
-        let _ = i;
     }
 }

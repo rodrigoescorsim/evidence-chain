@@ -64,7 +64,7 @@ fn main() {
         _ => "LOW",
     };
 
-    println!("Signal:     {} v{}", chain.heuristic_id, chain.heuristic_version);
+    println!("Signal:     {} v{}", chain.rule_id, chain.rule_version);
     println!(
         "Confidence: {} ({}/{} checks, {:.0}%)",
         confidence,
